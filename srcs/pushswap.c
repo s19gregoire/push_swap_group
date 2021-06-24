@@ -12,34 +12,41 @@
 
 #include "../inc/pushswap.h"
 
+
+static t_stack *copy_stack(t_stack *s)
+{
+    t_stack *c;
+
+    c = NULL;
+    while (s)
+    {
+        new_stack(&c, s->num);
+        s = s->next;
+    }
+    return (c);
+}
+
 static void sort_belowmid(t_stack **a, t_stack **b, int mid)
 {
     int min;
-    t_stack *tmp;
-    t_stack *head;
-    
-    tmp = *a;
-    min = tmp->num;
-    head = tmp;
+
+    min = 0;
     while (min != mid)
     {
-        while (tmp && tmp->next)
+        min = (*a)->num;
+        while (*a)
         {
-            if (tmp->num < tmp->next->num && tmp->num < min)
-                min = tmp->num;
-            tmp = tmp->next;
+            if ((*a)->num < min)
+                min = (*a)->num;
+            if (!(*a)->next)
+                break ;
+            *a = (*a)->next;
         }        
-        if (min == mid)
-            break ;
+        while ((*a)->prev)
+            *a = (*a)->prev;
         ft_push(b, min, 'b');
         ft_pop(a, min);
-        tmp = head;
-        min = head->num;
     }
-    // printf("b\n");
-    // print_stack(*b);
-    // printf("a\n");
-    // print_stack(*a);
 }
 
 static void sort_abovemid(t_stack **a, t_stack **b)
@@ -59,19 +66,6 @@ static void sort_abovemid(t_stack **a, t_stack **b)
         head = head->next;
     }
     ft_emptystack(b, a);
-}
-
-static t_stack *copy_stack(t_stack *s)
-{
-    t_stack *c;
-
-    c = NULL;
-    while (s)
-    {
-        new_stack(&c, s->num);
-        s = s->next;
-    }
-    return (c);
 }
 
 static int find_middle(t_stack *a, int l)

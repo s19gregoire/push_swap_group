@@ -27,13 +27,15 @@ int    is_sorted(t_stack *s)
 void ft_pop(t_stack **s, int i)
 {
     t_stack *to_del;
+    t_stack *head;
 
     if (!*s)
         return ; // error and free to handle
     to_del = *s;
+    head = *s;
     while (to_del && to_del->num != i)
         to_del = to_del->next;
-    if (to_del == *s)
+    if (to_del == head)
         *s = to_del->next;
     if (to_del->next)
         to_del->next->prev = to_del->prev;
@@ -86,5 +88,70 @@ void ft_emptystack(t_stack **b, t_stack **a)
         ft_push(a, (*b)->num, 'a');
         ft_pop(b, (*b)->num);
     }
-    
 }
+
+void ft_shiftup(t_stack **s, char c)
+{
+    int last;
+    // t_stack *head;
+    
+    last = (*s)->num;
+    if (!*s)
+        return ;
+    while (*s)
+    {
+        if (!(*s)->next)
+        {
+            (*s)->num = last;
+            break ;
+        }
+        (*s)->num = (*s)->next->num;
+    }
+    // head = *s;
+    // *s = (*s)->next;
+    // (*s)->prev = 0;
+    // while (*s)
+    //     *s = (*s)->next;
+    // (*s)->next = head;
+    // head->prev = *s;
+    if (c)
+        printf("r%c\n", c);
+}
+
+void ft_shiftdown(t_stack **s, char c)
+{
+    int top;
+    
+    
+    if (!*s)
+        return ;
+    while (*s)
+        *s = (*s)->next;
+    top = (*s)->num;
+    while (*s)
+    {
+        if (!(*s)->prev)
+        {
+            (*s)->num = top;
+            break ;
+        }
+        (*s)->num = (*s)->prev->num;
+    }
+    if (c)
+        printf("rr%c\n", c);
+}
+
+void ft_rr(t_stack **a, t_stack **b, char c)
+{
+    ft_shiftup(a, c);
+    ft_shiftup(b, c);
+    printf("rr\n");
+}
+
+void ft_rrr(t_stack **a, t_stack **b, char c)
+{
+    ft_shiftdown(a, c);
+    ft_shiftdown(b, c);
+    printf("rrr\n");
+}
+
