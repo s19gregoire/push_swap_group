@@ -12,32 +12,50 @@
 
 #include "../inc/pushswap.h"
 
-void	print_stack(t_stack *a)
+void print_stack(t_stack *a)
 {
-	while (a)
-	{
-		printf("%d\n", a->num);
-		a = a->next;
-	}
+    // t_stack *last;
+
+    // last = 0;
+    while (a)
+    {
+        dprintf(2, "%d\n", a->num);
+        // last = a;
+        a = a->next;
+    }
+    // while (last)
+    // {
+    //     printf("%d\n", last->num);
+    //     last = last->prev;
+    // }
 }
 
-int	main(int argc, char **argv)
+int main(int argc, char **argv)
 {
-	t_stack	*a;
-	t_stack	*b;
-	int		l;
+    t_stack *a;
+    t_stack *b;
+    int l;
 
-	if (argc == 1)
-		printf("Error\nInvalid number of args");
-	else
-	{
-		l = argc - 1;
-		a = NULL;
-		fill_stack(l, argv, &a);
-		b = NULL;
-		pushswap(&a, &b, l);
-		free_stack(&a);
-		free_stack(&b);
-	}
-	return (0);
+    if (argc == 1)
+        printf("Error\nInvalid number of args\n");
+    else
+    {
+        l = argc - 1;
+        a = NULL;
+        fill_stack(l, argv, &a);
+        // print_stack(a);
+        b = NULL;
+        pushswap(&a, &b, l);
+        // print_stack(a);
+        // print_stack(b);
+        free_stack(&a); 
+        free_stack(&b);
+    }
+    return (0);
 }
+
+//  2>&1 (redirection) 
+// 2>file.txt
+// rotate range 
+// trouver le minimum dans b
+// normaliser input

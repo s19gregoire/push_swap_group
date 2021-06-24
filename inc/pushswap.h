@@ -17,6 +17,15 @@
 # include <stdlib.h>
 # include "libft.h"
 
+enum e_cmd
+{
+    VAL0,
+    VAL1,
+    VAL2,
+    MAXVAL,
+    INVALIDVAL = -1
+};
+
 typedef struct  s_stack
 {
     int num;

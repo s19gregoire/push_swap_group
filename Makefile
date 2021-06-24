@@ -14,8 +14,9 @@ NAME = push_swap
 
 INC = -I./inc
 
-CC = gcc -g
+CC = gcc -g3
 CFLAGS = -Wall -Wextra -Werror
+#CFLAGS += -fsanitize=address
 
 SRC = \
 	srcs/main.c \
