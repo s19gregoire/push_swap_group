@@ -19,7 +19,7 @@ void print_stack(t_stack *a)
     // last = 0;
     while (a)
     {
-        dprintf(2, "%d\n", a->num);
+        printf("%d\n", a->num);
         // last = a;
         a = a->next;
     }
@@ -46,7 +46,7 @@ int main(int argc, char **argv)
         // print_stack(a);
         b = NULL;
         pushswap(&a, &b, l);
-        print_stack(a);
+        // print_stack(a);
         // print_stack(b);
         free_stack(&a); 
         free_stack(&b);

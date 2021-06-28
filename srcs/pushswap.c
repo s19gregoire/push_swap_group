@@ -68,24 +68,37 @@ static t_stack *copy_stack(t_stack *s)
 //     ft_emptystack(b, a);
 // }
 
+static int  sorted(t_stack *s)
+{
+    while (s->prev)
+        s = s->prev;
+    while (s && s->next)
+    {
+        if (s->num > s->next->num)
+            return (0);
+        s = s->next;
+    }
+    return (1);
+}
+
 static int last(t_stack *s)
 {
-    if (s)
+    if (!s)
         return (-1);
-    while (s)
+    while (s && s->next)
         s = s->next;
     return (s->num);
 }
 
 static void    sorting(t_stack **a, t_stack **b, int mid)
 {
-    while (*a)
+    while (!sorted(*a) && *a)
     {
-        if (*a && (*a)->num < last(*a))
-            ft_shiftdown(a, 'a');
-        if (*a && (*a)->next && (*a)->num < (*a)->next->num)
+        if (*a && (*a)->next && (*a)->num > (*a)->next->num)
             ft_swap(*a, 'a');
-        if ((*a)->num < mid)
+        if (!sorted(*a) && *a && (*a)->num > last(*a))
+            ft_shiftdown(a, 'a');
+        if (!sorted(*a) && (*a)->num < mid)
         {
             ft_push(b, (*a)->num, 'b');
             ft_pop(a, (*a)->num);
@@ -95,7 +108,6 @@ static void    sorting(t_stack **a, t_stack **b, int mid)
                 ft_swap(*b, 'b');
         }
         *a = (*a)->next;   
-
     }
     ft_emptystack(b, a);
 }

@@ -120,23 +120,23 @@ void ft_shiftup(t_stack **s, char c)
 
 void ft_shiftdown(t_stack **s, char c)
 {
-    int top;
-    
+    t_stack *first;
+    t_stack *last;
     
     if (!*s)
         return ;
-    while (*s)
+    while (*s && (*s)->next)
         *s = (*s)->next;
-    top = (*s)->num;
-    while (*s)
-    {
-        if (!(*s)->prev)
-        {
-            (*s)->num = top;
-            break ;
-        }
-        (*s)->num = (*s)->prev->num;
-    }
+    last = *s;
+    if (!(*s)->prev)
+        return ;
+    (*s)->prev->next = 0;
+    first = (*s)->prev;
+    while (first && first->prev)
+        first = first->prev;
+    first->prev = last;
+    last->next = first;
+    last->prev = 0;
     if (c)
         printf("rr%c\n", c);
 }
