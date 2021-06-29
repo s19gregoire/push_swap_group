@@ -98,14 +98,18 @@ static void    sorting(t_stack **a, t_stack **b, int mid)
             ft_swap(*a, 'a');
         if (!sorted(*a) && *a && (*a)->num > last(*a))
             ft_shiftdown(a, 'a');
+        if (!sorted(*a) && *a && (*a)->num < last(*a))
+            ft_shiftup(a, 'a');
         if (!sorted(*a) && (*a)->num < mid)
         {
             ft_push(b, (*a)->num, 'b');
             ft_pop(a, (*a)->num);
-            if (*b && (*b)->num < last(*b))
-                ft_shiftup(b, 'b');
             if (*b && (*b)->next && (*b)->num < (*b)->next->num)
                 ft_swap(*b, 'b');
+            if (*b && (*b)->num > last(*b))
+                ft_shiftup(b, 'b');
+            if (*b && (*b)->num < last(*b))
+                ft_shiftup(b, 'b');
         }
         *a = (*a)->next;   
     }

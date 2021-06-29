@@ -92,30 +92,25 @@ void ft_emptystack(t_stack **b, t_stack **a)
 
 void ft_shiftup(t_stack **s, char c)
 {
-    int last;
-    // t_stack *head;
+    t_stack *first;
+    t_stack *last;
     
-    last = (*s)->num;
     if (!*s)
         return ;
-    while (*s)
-    {
-        if (!(*s)->next)
-        {
-            (*s)->num = last;
-            break ;
-        }
-        (*s)->num = (*s)->next->num;
-    }
-    // head = *s;
-    // *s = (*s)->next;
-    // (*s)->prev = 0;
-    // while (*s)
-    //     *s = (*s)->next;
-    // (*s)->next = head;
-    // head->prev = *s;
+    while (*s && (*s)->prev)
+        *s = (*s)->prev;
+    last = *s;
+    if (!(*s)->next)
+        return ;
+    first = (*s)->next;
+    first->prev = 0;
+    while (first && first->next)
+        first = first->next;
+    first->next = last;
+    last->next = 0;
+    last->prev = first;
     if (c)
-        printf("r%c\n", c);
+        printf("rr%c\n", c);
 }
 
 void ft_shiftdown(t_stack **s, char c)
