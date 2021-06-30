@@ -35,12 +35,13 @@ void ft_pop(t_stack **s, int i)
     head = *s;
     while (to_del && to_del->num != i)
         to_del = to_del->next;
-    if (to_del == head)
-        *s = to_del->next;
     if (to_del->next)
         to_del->next->prev = to_del->prev;
     if (to_del->prev)
         to_del->prev->next = to_del->next;
+    *s = head;
+    if (to_del == head)
+        *s = to_del->next;
     free(to_del);
 }
 
@@ -67,6 +68,7 @@ void ft_push(t_stack **s, int i, char c)
     top->prev = 0;
     top->next = *s;
     top->num = i;
+    (*s)->prev = top;
     *s = top;
 }
 
@@ -83,10 +85,16 @@ void ft_swap(t_stack *s, char c)
 
 void ft_emptystack(t_stack **b, t_stack **a)
 {
+    int i;
+
+    i = 0;
     while (*b)
     {
         ft_push(a, (*b)->num, 'a');
         ft_pop(b, (*b)->num);
+        i++;
+        if (i == 3)
+            break ;
     }
 }
 
@@ -103,6 +111,7 @@ void ft_shiftup(t_stack **s, char c)
     if (!(*s)->next)
         return ;
     first = (*s)->next;
+    *s = first;
     first->prev = 0;
     while (first && first->next)
         first = first->next;
@@ -110,7 +119,7 @@ void ft_shiftup(t_stack **s, char c)
     last->next = 0;
     last->prev = first;
     if (c)
-        printf("rr%c\n", c);
+        printf("r%c\n", c);
 }
 
 void ft_shiftdown(t_stack **s, char c)

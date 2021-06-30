@@ -94,24 +94,35 @@ static void    sorting(t_stack **a, t_stack **b, int mid)
 {
     while (!sorted(*a) && *a)
     {
-        if (*a && (*a)->next && (*a)->num > (*a)->next->num)
+        if (*a && (*a)->next && (*a)->num >= mid && (*a)->num > (*a)->next->num)
             ft_swap(*a, 'a');
-        if (!sorted(*a) && *a && (*a)->num > last(*a))
+        if (!sorted(*a) && (*a)->num >= mid && *a && (*a)->num > last(*a))
             ft_shiftdown(a, 'a');
-        if (!sorted(*a) && *a && (*a)->num < last(*a))
-            ft_shiftup(a, 'a');
-        if (!sorted(*a) && (*a)->num < mid)
+        while (*a && !sorted(*a) && (*a)->num < mid)
         {
+            // printf("A");
+            // print_stack(*a);
             ft_push(b, (*a)->num, 'b');
             ft_pop(a, (*a)->num);
             if (*b && (*b)->next && (*b)->num < (*b)->next->num)
                 ft_swap(*b, 'b');
-            if (*b && (*b)->num > last(*b))
+            else if (*b && (*b)->num > last(*b))
                 ft_shiftup(b, 'b');
-            if (*b && (*b)->num < last(*b))
+            else if (*b && (*b)->num < last(*b))
                 ft_shiftup(b, 'b');
         }
-        *a = (*a)->next;   
+        // printf("B");
+        // print_stack(*b);
+        if (!sorted(*a) && *a && (*a)->num < last(*a))
+            ft_shiftup(a, 'a');
+        // printf("%d\n", (*a)->num);
+        // if (*a && tmp == (*a)->num)
+        // {
+        //     if ((*a)->next)
+        //         *a = (*a)->next;
+        //     else if ((*a)->prev)
+        //         *a = (*a)->prev;
+        // }
     }
     ft_emptystack(b, a);
 }
@@ -155,10 +166,5 @@ void pushswap(t_stack **a, t_stack **b, int l)
     int mid;
 
     mid = find_middle(*a, l);
-    // printf("a\n");
-    // print_stack(*a);
-    // sort_belowmid(a, b, mid);
-    // sort_abovemid(a, b);
     sorting(a, b, mid);
-    // ft_push(&b, mid);
 }
