@@ -98,7 +98,7 @@ void ft_emptystack(t_stack **b, t_stack **a)
     }
 }
 
-void ft_shiftup(t_stack **s, char c)
+void ft_shiftdown(t_stack **s, char c)
 {
     t_stack *first;
     t_stack *last;
@@ -122,7 +122,7 @@ void ft_shiftup(t_stack **s, char c)
         printf("r%c\n", c);
 }
 
-void ft_shiftdown(t_stack **s, char c)
+void ft_shiftup(t_stack **s, char c)
 {
     t_stack *first;
     t_stack *last;
@@ -147,15 +147,15 @@ void ft_shiftdown(t_stack **s, char c)
 
 void ft_rr(t_stack **a, t_stack **b, char c)
 {
-    ft_shiftup(a, c);
-    ft_shiftup(b, c);
+    ft_shiftdown(a, c);
+    ft_shiftdown(b, c);
     printf("rr\n");
 }
 
 void ft_rrr(t_stack **a, t_stack **b, char c)
 {
-    ft_shiftdown(a, c);
-    ft_shiftdown(b, c);
+    ft_shiftup(a, c);
+    ft_shiftup(b, c);
     printf("rrr\n");
 }
 
