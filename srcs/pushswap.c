@@ -12,6 +12,20 @@
 
 #include "../inc/pushswap.h"
 
+static int get_min(t_stack *s)
+{
+    int min;
+
+    min = s->num;
+    while (s)
+    {
+        if (s->num < min)
+            min = s->num;
+        s = s->next;
+    }
+    return (min);
+
+}
 
 static t_stack *copy_stack(t_stack *s)
 {
@@ -26,51 +40,9 @@ static t_stack *copy_stack(t_stack *s)
     return (c);
 }
 
-// static void sort_belowmid(t_stack **a, t_stack **b, int mid)
-// {
-//     int min;
-
-//     min = 0;
-//     while (min != mid)
-//     {
-//         min = (*a)->num;
-//         while (*a)
-//         {
-//             if ((*a)->num < min)
-//                 min = (*a)->num;
-//             if (!(*a)->next)
-//                 break ;
-//             *a = (*a)->next;
-//         }        
-//         while ((*a)->prev)
-//             *a = (*a)->prev;
-//         ft_push(b, min, 'b');
-//         ft_pop(a, min);
-//     }
-// }
-
-// static void sort_abovemid(t_stack **a, t_stack **b)
-// {
-//     t_stack *head;
-
-//     head = *a;
-//     // printf("a again\n");
-//     // print_stack(*a);
-//     while (head)
-//     {
-//         // printf("head %d\n", head->num);
-//         if (head->next && head->num > head->next->num)
-//             ft_swap(head, 'a');
-//         if (is_sorted(head))
-//             break ;
-//         head = head->next;
-//     }
-//     ft_emptystack(b, a);
-// }
-
 static int  sorted(t_stack *s)
 {
-    while (s->prev)
+    while (s && s->prev)
         s = s->prev;
     while (s && s->next)
     {
@@ -90,40 +62,192 @@ static int last(t_stack *s)
     return (s->num);
 }
 
-static void    sorting(t_stack **a, t_stack **b, int mid)
+static int  desc(t_stack *s)
 {
+    while (s->prev)
+        s = s->prev;
+    while (s && s->next)
+    {
+        if (s->num < s->next->num)
+            return (0);
+        s = s->next;
+    }
+    return (1);
+}
+
+static void    quick_sort(t_stack **a, t_stack **b, int mid, int l)
+{
+    int c;
+    int n;
+
+    c = 0;
+    n = 0;
     while (!sorted(*a) && *a)
     {
-        if (*a && (*a)->next && (*a)->num >= mid && (*a)->num > (*a)->next->num)
+        while (*a && (*a)->next && (*a)->num >= mid && (*a)->num > (*a)->next->num)
             ft_swap(*a, 'a');
-        if (!sorted(*a) && (*a)->num >= mid && *a && (*a)->num > last(*a))
-            ft_shiftdown(a, 'a');
         while (*a && !sorted(*a) && (*a)->num < mid)
         {
-            // printf("A");
-            // print_stack(*a);
             ft_push(b, (*a)->num, 'b');
             ft_pop(a, (*a)->num);
             if (*b && (*b)->next && (*b)->num < (*b)->next->num)
                 ft_swap(*b, 'b');
-            else if (*b && (*b)->num > last(*b))
-                ft_shiftup(b, 'b');
-            else if (*b && (*b)->num < last(*b))
+            else if (*b && !desc(*b) && (*b)->num > last(*b))
+                ft_shiftdown(b, 'b');
+            else if (*b && !desc(*b) && (*b)->num < last(*b))
                 ft_shiftup(b, 'b');
         }
-        // printf("B");
-        // print_stack(*b);
-        if (!sorted(*a) && *a && (*a)->num < last(*a))
+        while (!sorted(*a) && *a && (*a)->next && (*a)->num >= mid && ((*a)->num < last(*a))) //ra
+            ft_shiftdown(a, 'a');
+        while (*a && (*a)->next && (*a)->num >= mid && (*a)->num > (*a)->next->num)
+            ft_swap(*a, 'a');
+        while (!sorted(*a) && (*a)->next && (*a)->num >= mid && *a && (*a)->num > last(*a)) //rra
             ft_shiftup(a, 'a');
-        // printf("%d\n", (*a)->num);
-        // if (*a && tmp == (*a)->num)
-        // {
-        //     if ((*a)->next)
-        //         *a = (*a)->next;
-        //     else if ((*a)->prev)
-        //         *a = (*a)->prev;
-        // }
+        while (*a && (*a)->next && (*a)->num >= mid && (*a)->num > (*a)->next->num)
+            ft_swap(*a, 'a');
+        while (!sorted(*a) && *a && (*a)->next && (*a)->num < (*a)->next->num)
+        {
+            *a = (*a)->next;
+            n = (*a)->num;
+            c++;
+        }
+        while (!sorted(*a) && *a && (*a)->prev)
+            *a = (*a)->prev;
+        if (!sorted(*a) && c != l && (c < l / 2))
+        {
+            while (*a && (*a)->num != n)
+              ft_shiftup(a, 'a');  
+        }
+        else if (!sorted(*a) && c != l)
+        {
+            while (*a && (*a)->num != n)
+              ft_shiftdown(a, 'a');
+        }
     }
+    ft_emptystack(b, a);
+}
+
+static void set_b(t_stack **b, int l)
+{
+    int min;
+    int c;
+
+    min = (*b)->num;
+    c = 0;
+    while (*b)
+    {
+        if ((*b)->num < min)
+            min = (*b)->num;
+        if (!(*b)->next)
+            break ;
+        *b = (*b)->next;   
+    }
+    while (*b && (*b)->prev)
+        *b = (*b)->prev;
+    while (*b && (*b)->num != min)
+    {
+        if (!(*b)->next)
+            break ;
+        *b = (*b)->next;
+        c++;
+    }
+    while (*b && (*b)->prev)
+        *b = (*b)->prev;
+    if (c <= l / 2)
+    {
+        while (*b && (*b)->num != min)
+            ft_shiftup(b, 'b');
+    }
+    else
+        while (*b && last(*b) != min)
+            ft_shiftdown(b, 'b');
+}
+
+static int sort_b(t_stack **a, t_stack **b, int n, int l)
+{
+    int c;
+
+    c = 0;
+    while (*b && (*b)->num < n)
+    {
+        c++;
+        if (!(*b)->next)
+        {
+            ft_push(b, n, 'b');
+            ft_pop(a, n);
+            ft_shiftup(b, 'b');
+            return (0);
+        }
+        if ((*b)->next && (*b)->next->num < n)
+            *b = (*b)->next;
+        else
+            break ;   
+    }
+    while (*b && (*b)->prev)
+        *b = (*b)->prev;
+    if (c <= l / 2)
+    {
+        while (*b && (*b)->num < n)
+            ft_shiftup(b, 'b');
+    }
+    else
+        while (*b && last(*b) > n)
+            ft_shiftdown(b, 'b');
+    return (1);
+}
+
+static void shift_ontop(t_stack *a, int min, int l)
+{
+    int c;
+
+    c = 0;
+    while (a && a->num != min)
+    {
+        c++;
+        if (!a->next)
+            break ;
+        a = a->next;
+    }
+    while (a && a->prev)
+        a = a->prev;
+    if (c <= l / 2)
+    {
+        while (a && a->num != min)
+            ft_shiftup(&a, 'a');
+    }
+    else
+        while (a && a->num != min)
+            ft_shiftdown(&a, 'a');
+}
+
+static void    bucket_sort(t_stack **a, t_stack **b, int l)
+{
+    int n;
+    int min;
+    
+    while (!sorted(*a) && *a)
+    {
+        n = 5;
+        while (*a && n)
+        {
+            min = get_min(*a);
+            shift_ontop(*a, min, l);
+            print_stack(*a);
+            if (sort_b(a, b, min, l))
+            {
+                ft_push(b, min, 'b');
+                ft_pop(a, min);
+            }
+            if (!*a || !(*a)->next)
+                break ;
+            *a = (*a)->next;
+            n--;
+        }
+        print_stack(*b);
+        while (*a && (*a)->prev)
+            *a = (*a)->prev;
+    }
+    set_b(b, l);
     ft_emptystack(b, a);
 }
 
@@ -143,11 +267,7 @@ static int find_middle(t_stack *a, int l)
             tmp = head;
         }
         else   
-            tmp = tmp->next;       // enum pour identifier les commandes
-        // 0^2 quick sort
-        // pre sort tu subdivide et tu trouves les pivot
-        // tu utilises les pivot dans la stack pas pre trié
-        // radix sort 
+            tmp = tmp->next;
     }
     tmp = head;
     if (l % 2)
@@ -166,5 +286,8 @@ void pushswap(t_stack **a, t_stack **b, int l)
     int mid;
 
     mid = find_middle(*a, l);
-    sorting(a, b, mid);
+    if (l <= 5)
+        quick_sort(a, b, mid, l);
+    else
+        bucket_sort(a, b, l); 
 }

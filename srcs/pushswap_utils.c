@@ -134,8 +134,9 @@ void ft_shiftdown(t_stack **s, char c)
     last = *s;
     if (!(*s)->prev)
         return ;
-    (*s)->prev->next = 0;
+    last->prev->next = 0;
     first = (*s)->prev;
+    *s = last;
     while (first && first->prev)
         first = first->prev;
     first->prev = last;
