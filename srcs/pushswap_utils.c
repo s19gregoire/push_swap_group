@@ -129,6 +129,8 @@ void ft_shiftdown(t_stack **s, char c)
     
     if (!*s)
         return ;
+    print_stack(*s);
+    printf("---");
     while (*s && (*s)->next)
         *s = (*s)->next;
     last = *s;
@@ -144,6 +146,7 @@ void ft_shiftdown(t_stack **s, char c)
     last->prev = 0;
     if (c)
         printf("rr%c\n", c);
+    print_stack(*s);
 }
 
 void ft_rr(t_stack **a, t_stack **b, char c)

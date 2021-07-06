@@ -36,7 +36,7 @@ int main(int argc, char **argv)
         fill_stack(l, argv, &a);
         b = NULL;
         pushswap(&a, &b, l);
-        print_stack(a);
+        // print_stack(a);
         free_stack(&a); 
         free_stack(&b);
     }
