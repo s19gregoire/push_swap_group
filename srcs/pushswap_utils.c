@@ -85,16 +85,10 @@ void ft_swap(t_stack *s, char c)
 
 void ft_emptystack(t_stack **b, t_stack **a)
 {
-    int i;
-
-    i = 0;
     while (*b)
     {
         ft_push(a, (*b)->num, 'a');
         ft_pop(b, (*b)->num);
-        i++;
-        if (i == 3)
-            break ;
     }
 }
 
@@ -129,8 +123,8 @@ void ft_shiftdown(t_stack **s, char c)
     
     if (!*s)
         return ;
-    print_stack(*s);
-    printf("---");
+    // print_stack(*s);
+    // printf("---");
     while (*s && (*s)->next)
         *s = (*s)->next;
     last = *s;
@@ -146,7 +140,7 @@ void ft_shiftdown(t_stack **s, char c)
     last->prev = 0;
     if (c)
         printf("rr%c\n", c);
-    print_stack(*s);
+    // print_stack(*s);
 }
 
 void ft_rr(t_stack **a, t_stack **b, char c)
