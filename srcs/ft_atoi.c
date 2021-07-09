@@ -12,6 +12,13 @@
 
 #include "../inc/pushswap.h"
 
+static	int	ft_isdigit(int c)
+{
+	if (c >= 48 && c <= 57)
+		return (1);
+	return (0);
+}
+
 static int	check_sign(char c)
 {
 	if (c == '-')

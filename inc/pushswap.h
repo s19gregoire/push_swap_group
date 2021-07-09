@@ -15,12 +15,11 @@
 
 # include <stdio.h>
 # include <stdlib.h>
-# include "libft.h"
+# include <limits.h>
 
 typedef struct  s_stack
 {
     int num;
-    int pos;
     struct s_stack *prev;
     struct s_stack *next;
 }               t_stack;
@@ -36,12 +35,9 @@ void    ft_pop(t_stack **s, int i);
 void    print_stack(t_stack *a);
 void    ft_emptystack(t_stack **a, t_stack **b);
 int     is_sorted(t_stack *s);
-void ft_shiftdown(t_stack **s, char c);
-void ft_shiftup(t_stack **s, char c);
-void ft_rr(t_stack **a, t_stack **b, char c);
-void ft_rrr(t_stack **a, t_stack **b, char c);
-
-// int input_length(char *input);
-// int check_input(char *input, int *a);
+void    ft_shiftdown(t_stack **s, char c);
+void    ft_shiftup(t_stack **s, char c);
+void    ft_rr(t_stack **a, t_stack **b, char c);
+void    ft_rrr(t_stack **a, t_stack **b, char c);
 
 # endif

@@ -27,24 +27,16 @@ SRC = \
 
 OBJS = 	$(SRC:.c=.o)
 
-LIBFTDIR = libft/
-LIBFT = $(LIBFTDIR)libft.a
-
-$(NAME): $(OBJS) $(LIBFT)
-	$(CC) $(OBJS) $(CFLAGS) $(LIBFT) $(INC) -o $(NAME) 
+$(NAME): $(OBJS)
+	$(CC) $(OBJS) $(CFLAGS) $(INC) -o $(NAME) 
 
 all: $(NAME)
 
-$(LIBFT):
-	@cd ./libft && make
-
 clean:
 	@rm -f $(OBJS)
-	@cd $(LIBFTDIR) && make clean
 
 fclean: clean
 	@rm -f $(NAME)
-	@cd $(LIBFTDIR) && make fclean
 
 re: fclean all
 
