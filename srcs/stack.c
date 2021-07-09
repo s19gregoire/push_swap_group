@@ -57,7 +57,6 @@ void    fill_stack(int c, char **ag, t_stack **a)
     while (++i <= c)
     {
         value = ft_atoi(ag[i], *a);
-        new_stack(a, value);
-        (*a)->pos= i;
+        new_stack(a, value); 
     }
 }
