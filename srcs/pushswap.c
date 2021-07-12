@@ -98,15 +98,6 @@ static int  desc(t_stack *s)
     }
     return (1);
 }
-// 1 2 0
-
-// 2 1 0
-
-// 2 0 1
-
-// 0 2 1
-
-// 1 0 2
 
 static int to_swap(t_stack **a, int mid, int l)
 {
@@ -140,7 +131,7 @@ static int to_up(t_stack **a, int mid, int l)
     return ((*a)->next && (*a)->num >= mid && *a && (*a)->num < last(*a));
 }
 
-static void    quick_sort(t_stack **a, t_stack **b, int mid, int l)
+static void    small_sort(t_stack **a, t_stack **b, int mid, int l)
 {
     while (not_sorted(*a, mid, l) && a && *a)
     {
@@ -167,108 +158,8 @@ static void    quick_sort(t_stack **a, t_stack **b, int mid, int l)
     ft_emptystack(b, a);
 }
 
-// static void set_b(t_stack **b, int l)
-// {
-//     int min;
-//     int c;
-
-//     min = (*b)->num;
-//     c = 0;
-//     while (*b)
-//     {
-//         if ((*b)->num < min)
-//             min = (*b)->num;
-//         if (!(*b)->next)
-//             break ;
-//         *b = (*b)->next;   
-//     }
-//     while (*b && (*b)->prev)
-//         *b = (*b)->prev;
-//     while (*b && (*b)->num != min)
-//     {
-//         if (!(*b)->next)
-//             break ;
-//         *b = (*b)->next;
-//         c++;
-//     }
-//     while (*b && (*b)->prev)
-//         *b = (*b)->prev;
-//     if (c <= l / 2)
-//     {
-//         while (*b && (*b)->num != min)
-//             ft_shiftup(b, 'b');
-//     }
-//     else
-//         while (*b && last(*b) != min)
-//             ft_shiftdown(b, 'b');
-// }
-
-// static int sort_b(t_stack **a, t_stack **b, int n, int l)
-// {
-//     int c;
-
-//     c = 0;
-//     while (*b && (*b)->num < n)
-//     {
-//         c++;
-//         if (!(*b)->next)
-//         {
-//             ft_push(b, n, 'b');
-//             ft_pop(a, n);
-//             ft_shiftup(b, 'b');
-//             return (0);
-//         }
-//         if ((*b)->next && (*b)->next->num < n)
-//             *b = (*b)->next;
-//         else
-//             break ;   
-//     }
-//     while (*b && (*b)->prev)
-//         *b = (*b)->prev;
-//     if (c <= l / 2)
-//     {
-//         while (*b && (*b)->num < n)
-//             ft_shiftup(b, 'b');
-//     }
-//     else
-//         while (*b && last(*b) > n)
-//             ft_shiftdown(b, 'b');
-//     return (1);
-// }
-
-// static void shift_ontop(t_stack *a, int min, int l)
-// {
-//     int c;
-
-//     c = 0;
-//     while (a && a->num != min)
-//     {
-//         c++;
-//         if (!a->next)
-//             break ;
-//         a = a->next;
-//     }
-//     while (a && a->prev)
-//         a = a->prev;
-//     if (c <= l / 2)
-//     {
-//         while (a && a->num != min)
-//             ft_shiftup(&a, 'a');
-//     }
-//     else
-//         while (a && a->num != min)
-//             ft_shiftdown(&a, 'a');
-// }
-
-static void normalise_stack(t_stack **a)
+static void ft_quicksort(t_stack *tmp, t_stack *head)
 {
-    int i;
-    t_stack *tmp;
-    t_stack *head;
-
-    tmp = copy_stack(*a);
-    head = tmp;
-    i = 0;
     while (tmp)
     {
         if (tmp->next && tmp->num > tmp->next->num)
@@ -279,12 +170,36 @@ static void normalise_stack(t_stack **a)
         else   
             tmp = tmp->next;
     }
+}
+
+static void normalise_stack(t_stack **a)
+{
+    int i;
+    t_stack *tmp;
+    t_stack *head;
+
+    tmp = copy_stack(*a);
+    head = tmp;
+    i = 0;
+    ft_quicksort(tmp, head);
     tmp = head;
     while (tmp)
     {
         while ((*a)->num != tmp->num)
             *a = (*a)->next;
-        (*a)->num = i;
+        if (!(*a)->pos)
+        {
+            (*a)->num = i;
+            (*a)->pos = 1;
+        }
+        else
+        {
+            *a = (*a)->next;
+            while ((*a)->num != tmp->num)
+                *a = (*a)->next;
+            (*a)->num = i;
+            (*a)->pos = 1;
+        }
         while (*a && (*a)->prev)
             *a = (*a)->prev;
         i++;
@@ -319,6 +234,7 @@ static void    bucket_sort(t_stack **a, t_stack **b)
     while (max >> bits)
         bits++;
     normalise_stack(a);
+    // printf("normalised");
     // print_stack(*a);
     while (a && *a && !sorted(*a) && i < bits)
     {
@@ -379,7 +295,7 @@ void pushswap(t_stack **a, t_stack **b, int l)
         return ;
     mid = find_middle(*a, l);
     if (l <= 5)
-        quick_sort(a, b, mid, l);
+        small_sort(a, b, mid, l);
     else
         bucket_sort(a, b);
 }
