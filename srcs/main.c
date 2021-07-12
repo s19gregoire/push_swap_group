@@ -12,33 +12,32 @@
 
 #include "../inc/pushswap.h"
 
-void print_stack(t_stack *a)
+void	print_stack(t_stack *a)
 {
-    while (a)
-    {
-        printf("%d\n", a->num);
-        a = a->next;
-    }
+	while (a)
+	{
+		printf("%d\n", a->num);
+		a = a->next;
+	}
 }
 
-int main(int argc, char **argv)
+int	main(int argc, char **argv)
 {
-    t_stack *a;
-    t_stack *b;
-    int l;
+	t_stack	*a;
+	t_stack	*b;
+	int		l;
 
-    if (argc == 1)
-        printf("Error\nInvalid number of args\n");
-    else
-    {
-        l = argc - 1;
-        a = NULL;
-        fill_stack(l, argv, &a);
-        b = NULL;
-        pushswap(&a, &b, l);
-        // print_stack(a);
-        free_stack(&a); 
-        free_stack(&b);
-    }
-    return (0);
+	if (argc == 1)
+		printf("Error\nInvalid number of args\n");
+	else
+	{
+		l = argc - 1;
+		a = NULL;
+		fill_stack(l, argv, &a);
+		b = NULL;
+		pushswap(&a, &b, l);
+		free_stack(&a);
+		free_stack(&b);
+	}
+	return (0);
 }

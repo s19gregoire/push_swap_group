@@ -10,35 +10,35 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-# ifndef PUSHSWAP_H
+#ifndef PUSHSWAP_H
 # define PUSHSWAP_H
 
 # include <stdio.h>
 # include <stdlib.h>
 # include <limits.h>
 
-typedef struct  s_stack
+typedef struct s_stack
 {
-    int num;
-    int pos;
-    struct s_stack *prev;
-    struct s_stack *next;
-}               t_stack;
+	int					num;
+	int					pos;
+	struct s_stack		*prev;
+	struct s_stack		*next;
+}				t_stack;
 
-int	    ft_atoi(const char *str, t_stack *a);
-void    pushswap(t_stack **a, t_stack **b, int l);
-void    fill_stack(int c, char **ag, t_stack **a);
-void    new_stack(t_stack **a, int value);
-void    free_stack(t_stack **a);
-void    ft_push(t_stack **s, int i, char c);
-void    ft_swap(t_stack *s, char c);
-void    ft_pop(t_stack **s, int i);
-void    print_stack(t_stack *a);
-void    ft_emptystack(t_stack **a, t_stack **b);
-int     is_sorted(t_stack *s);
-void    ft_shiftdown(t_stack **s, char c);
-void    ft_shiftup(t_stack **s, char c);
-void    ft_rr(t_stack **a, t_stack **b, char c);
-void    ft_rrr(t_stack **a, t_stack **b, char c);
+int		ft_atoi(const char *str, t_stack *a);
+void	pushswap(t_stack **a, t_stack **b, int l);
+void	fill_stack(int c, char **ag, t_stack **a);
+void	new_stack(t_stack **a, int value);
+void	free_stack(t_stack **a);
+void	ft_push(t_stack **s, int i, char c);
+void	ft_swap(t_stack *s, char c);
+void	ft_pop(t_stack **s, int i);
+void	print_stack(t_stack *a);
+void	ft_emptystack(t_stack **a, t_stack **b);
+int		is_sorted(t_stack *s);
+void	ft_shiftdown(t_stack **s, char c);
+void	ft_shiftup(t_stack **s, char c);
+void	ft_rr(t_stack **a, t_stack **b, char c);
+void	ft_rrr(t_stack **a, t_stack **b, char c);
 
-# endif
+#	endif
