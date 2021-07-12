@@ -26,6 +26,13 @@ static int	check_sign(char c)
 	return (1);
 }
 
+static int	stackdata(t_stack *a)
+{
+	printf("Error\n");
+	free_stack(&a);
+	exit (0);
+}
+
 int	ft_atoi(const char *str, t_stack *a)
 {
 	int						i;
@@ -48,11 +55,7 @@ int	ft_atoi(const char *str, t_stack *a)
 	while (str[i] >= '0' && str[i] <= '9')
 	{
 		if (n >= INT_MAX)
-		{
-			printf("Error\n");
-			free_stack(&a);
-			exit (0);
-		}
+			stackdata(a);
 		n = n * 10 + (str[i++] - '0');
 	}
 	return (sign * (int)n);
