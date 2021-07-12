@@ -27,9 +27,7 @@ int	main(int argc, char **argv)
 	t_stack	*b;
 	int		l;
 
-	if (argc == 1)
-		printf("Error\nInvalid number of args\n");
-	else
+	if (argc != 1)
 	{
 		l = argc - 1;
 		a = NULL;
