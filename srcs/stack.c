@@ -120,5 +120,5 @@ void	normalise_stack(t_stack **a)
 		i++;
 		tmp = tmp->next;
 	}
-	free_stack(&tmp);
+	free_stack(&head);
 }
