@@ -12,224 +12,223 @@
 
 #include "../inc/pushswap.h"
 
-static int get_min(t_stack *s)
+static int	get_min(t_stack *s)
 {
-    int min;
+	int	min;
 
-    min = s->num;
-    while (s)
-    {
-        if (s->num < min)
-            min = s->num;
-        s = s->next;
-    }
-    return (min);
+	min = s->num;
+	while (s)
+	{
+		if (s->num < min)
+			min = s->num;
+		s = s->next;
+	}
+	return (min);
 }
 
-static int get_max(t_stack *s)
+static int	get_max(t_stack *s)
 {
-    int min;
+	int	min;
 
-    min = s->num;
-    while (s)
-    {
-        if (s->num > min)
-            min = s->num;
-        s = s->next;
-    }
-    return (min);
-
+	min = s->num;
+	while (s)
+	{
+		if (s->num > min)
+			min = s->num;
+		s = s->next;
+	}
+	return (min);
 }
 
-
-static int  sorted(t_stack *s)
+static int	sorted(t_stack *s)
 {
-    while (s && s->next)
-    {
-        if (s->num > s->next->num)
-            return (0);
-        s = s->next;
-    }
-    return (1);
+	while (s && s->next)
+	{
+		if (s->num > s->next->num)
+			return (0);
+		s = s->next;
+	}
+	return (1);
 }
 
-static int  not_sorted(t_stack *s, int mid, int l)
+static int	not_sorted(t_stack *s, int mid, int l)
 {
-    while (s && s->next)
-    {
-        if (s->num > s->next->num
-            || (s->num < mid && l != 3))
-            return (1);
-        s = s->next;
-    }
-    return (0);
+	while (s && s->next)
+	{
+		if (s->num > s->next->num
+			|| (s->num < mid && l != 3))
+			return (1);
+		s = s->next;
+	}
+	return (0);
 }
 
-static int last(t_stack *s)
+static int	last(t_stack *s)
 {
-    if (!s)
-        return (-1);
-    while (s && s->next)
-        s = s->next;
-    return (s->num);
+	if (!s)
+		return (-1);
+	while (s && s->next)
+		s = s->next;
+	return (s->num);
 }
 
-static int  desc(t_stack *s)
+static int	desc(t_stack *s)
 {
-    while (s->prev)
-        s = s->prev;
-    while (s && s->next)
-    {
-        if (s->num < s->next->num)
-            return (0);
-        s = s->next;
-    }
-    return (1);
+	while (s->prev)
+		s = s->prev;
+	while (s && s->next)
+	{
+		if (s->num < s->next->num)
+			return (0);
+		s = s->next;
+	}
+	return (1);
 }
 
-static int to_swap(t_stack **a, int mid, int l)
+static int	to_swap(t_stack **a, int mid, int l)
 {
-    int max;
-    int min;
+	int	max;
+	int	min;
 
-    min = get_min(*a);
-    max = get_max(*a);
-    if (l == 3)
-        return (!(((*a)->num == max && (*a)->next->num == min) || ((*a)->num == mid && (*a)->next->num == max)));
-    return ((*a)->num >= mid && (*a)->num > (*a)->next->num);
+	min = get_min(*a);
+	max = get_max(*a);
+	if (l == 3)
+		return (!(((*a)->num == max && (*a)->next->num == min)
+				|| ((*a)->num == mid && (*a)->next->num == max)));
+	return ((*a)->num >= mid && (*a)->num > (*a)->next->num);
 }
 
-static int to_down(t_stack **a, int mid, int l)
+static int	to_down(t_stack **a, int mid, int l)
 {
-    int max;
+	int	max;
 
-    max = get_max(*a);
-    if (l == 3)
-        return ((*a)->next->next->num != max);
-    return (*a && (*a)->next && (*a)->num >= mid && ((*a)->num > last(*a)));
+	max = get_max(*a);
+	if (l == 3)
+		return ((*a)->next->next->num != max);
+	return (*a && (*a)->next && (*a)->num >= mid && ((*a)->num > last(*a)));
 }
 
-static int to_up(t_stack **a, int mid, int l)
+static int	to_up(t_stack **a, int mid, int l)
 {
-    int min;
+	int	min;
 
-    min = get_min(*a);
-    if (l == 3)
-        return ((*a)->next->next->num != min);
-    return ((*a)->next && (*a)->num >= mid && *a && (*a)->num < last(*a));
+	min = get_min(*a);
+	if (l == 3)
+		return ((*a)->next->next->num != min);
+	return ((*a)->next && (*a)->num >= mid && *a && (*a)->num < last(*a));
 }
 
-static void    small_sort(t_stack **a, t_stack **b, int mid, int l)
+static void	small_sort(t_stack **a, t_stack **b, int mid, int l)
 {
-    while (not_sorted(*a, mid, l) && a && *a)
-    {
-        if (*a && (*a)->next && to_swap(a, mid, l))
-            ft_swap(*a, 'a');
-        while (l != 3 && *a && not_sorted(*a, mid, l) && (*a)->num < mid)
-        {
-            ft_push(b, (*a)->num, 'b');
-            ft_pop(a, (*a)->num);
-            if (*b && (*b)->next && (*b)->num < (*b)->next->num)
-                ft_swap(*b, 'b');
-            else if (*b && !desc(*b) && (*b)->num > last(*b))
-                ft_shiftdown(b, 'b');
-            else if (*b && !desc(*b) && (*b)->num < last(*b))
-                ft_shiftup(b, 'b');
-        }
-        while (not_sorted(*a, mid, l) && to_down(a, mid, l)) //ra
-            ft_shiftdown(a, 'a');
-        if (not_sorted(*a, mid, l) && *a && (*a)->next && (to_swap(a, mid, l)))
-            ft_swap(*a, 'a');
-        while (not_sorted(*a, mid, l) && to_up(a, mid, l)) //rra
-            ft_shiftup(a, 'a');
-    }
-    ft_emptystack(b, a);
+	while (not_sorted(*a, mid, l) && a && *a)
+	{
+		if (*a && (*a)->next && to_swap(a, mid, l))
+			ft_swap(*a, 'a');
+		while (l != 3 && *a && not_sorted(*a, mid, l) && (*a)->num < mid)
+		{
+			ft_push(b, (*a)->num, 'b');
+			ft_pop(a, (*a)->num);
+			if (*b && (*b)->next && (*b)->num < (*b)->next->num)
+				ft_swap(*b, 'b');
+			else if (*b && !desc(*b) && (*b)->num > last(*b))
+				ft_shiftdown(b, 'b');
+			else if (*b && !desc(*b) && (*b)->num < last(*b))
+				ft_shiftup(b, 'b');
+		}
+		while (not_sorted(*a, mid, l) && to_down(a, mid, l))
+			ft_shiftdown(a, 'a');
+		if (not_sorted(*a, mid, l) && *a && (*a)->next && (to_swap(a, mid, l)))
+			ft_swap(*a, 'a');
+		while (not_sorted(*a, mid, l) && to_up(a, mid, l))
+			ft_shiftup(a, 'a');
+	}
+	ft_emptystack(b, a);
 }
 
-void ft_quicksort(t_stack *tmp, t_stack *head)
+void	ft_quicksort(t_stack *tmp, t_stack *head)
 {
-    while (tmp)
-    {
-        if (tmp->next && tmp->num > tmp->next->num)
-        {
-            ft_swap(tmp, 0);
-            tmp = head;
-        }
-        else   
-            tmp = tmp->next;
-    }
+	while (tmp)
+	{
+		if (tmp->next && tmp->num > tmp->next->num)
+		{
+			ft_swap(tmp, 0);
+			tmp = head;
+		}
+		else
+			tmp = tmp->next;
+	}
 }
 
-static void    bucket_sort(t_stack **a, t_stack **b)
+static void	bucket_sort(t_stack **a, t_stack **b)
 {
-    int bits;
-    int max;
-    int stack;
-    int i;
+	int	bits;
+	int	max;
+	int	stack;
+	int	i;
 
-    bits = 0;
-    i = 0;
-    max = get_max(*a);
-    while (max >> bits)
-        bits++;
-    normalise_stack(a);
-    while (a && *a && !sorted(*a) && i < bits)
-    {
-        stack = get_stacksize(*a);
-        while (a && *a && stack--)
-        {
-            if ((((*a)->num >> i)&1))
-                ft_shiftup(a, 'a');
-            else
-            {
-                ft_push(b, (*a)->num, 'b');
-                ft_pop(a, (*a)->num);
-            }           
-        }
-        ft_emptystack(b, a);
-        i++;
-    }
+	bits = 0;
+	i = 0;
+	max = get_max(*a);
+	while (max >> bits)
+		bits++;
+	normalise_stack(a);
+	while (a && *a && !sorted(*a) && i < bits)
+	{
+		stack = get_stacksize(*a);
+		while (a && *a && stack--)
+		{
+			if ((((*a)->num >> i) & 1))
+				ft_shiftup(a, 'a');
+			else
+			{
+				ft_push(b, (*a)->num, 'b');
+				ft_pop(a, (*a)->num);
+			}
+		}
+		ft_emptystack(b, a);
+		i++;
+	}
 }
 
-static int find_middle(t_stack *a, int l)
+static int	find_middle(t_stack *a, int l)
 {
-    int mid;
-    t_stack *tmp;
-    t_stack *head;
+	int		mid;
+	t_stack	*tmp;
+	t_stack	*head;
 
-    tmp = copy_stack(a);
-    head = tmp;
-    while (tmp)
-    {
-        if (tmp->next && tmp->num > tmp->next->num)
-        {
-            ft_swap(tmp, 0);
-            tmp = head;
-        }
-        else   
-            tmp = tmp->next;
-    }
-    tmp = head;
-    if (l % 2)
-        l = l / 2 + 1;
-    else
-        l = l / 2;
-    while (--l)
-        tmp = tmp->next;
-    mid = tmp->num;
-    free_stack(&tmp);
-    return (mid);  
+	tmp = copy_stack(a);
+	head = tmp;
+	while (tmp)
+	{
+		if (tmp->next && tmp->num > tmp->next->num)
+		{
+			ft_swap(tmp, 0);
+			tmp = head;
+		}
+		else
+			tmp = tmp->next;
+	}
+	tmp = head;
+	if (l % 2)
+		l = l / 2 + 1;
+	else
+		l = l / 2;
+	while (--l)
+		tmp = tmp->next;
+	mid = tmp->num;
+	free_stack(&tmp);
+	return (mid);
 }
 
-void pushswap(t_stack **a, t_stack **b, int l)
+void	pushswap(t_stack **a, t_stack **b, int l)
 {
-    int mid;
+	int	mid;
 
-    if (sorted(*a))
-        return ;
-    mid = find_middle(*a, l);
-    if (l <= 5)
-        small_sort(a, b, mid, l);
-    else
-        bucket_sort(a, b);
+	if (sorted(*a))
+		return ;
+	mid = find_middle(*a, l);
+	if (l <= 5)
+		small_sort(a, b, mid, l);
+	else
+		bucket_sort(a, b);
 }
