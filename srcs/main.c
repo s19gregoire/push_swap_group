@@ -12,13 +12,13 @@
 
 #include "../inc/pushswap.h"
 
-int get_len(int l)
+int	get_len(int l)
 {
-    if (l % 2)
-        l = l / 2 + 1;
-    else
-        l = l / 2;
-    return (l);
+	if (l % 2)
+		l = l / 2 + 1;
+	else
+		l = l / 2;
+	return (l);
 }
 
 int	main(int argc, char **argv)
