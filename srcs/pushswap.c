@@ -101,9 +101,7 @@ static	int	find_middle(t_stack *a, int l)
 			tmp = tmp->next;
 	}
 	tmp = head;
-	l = l / 2;
-	if (l % 2)
-		l += 1;
+	l = get_len(l);
 	while (--l)
 		tmp = tmp->next;
 	mid = tmp->num;

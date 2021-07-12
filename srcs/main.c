@@ -12,13 +12,13 @@
 
 #include "../inc/pushswap.h"
 
-void	print_stack(t_stack *a)
+int get_len(int l)
 {
-	while (a)
-	{
-		printf("%d\n", a->num);
-		a = a->next;
-	}
+    if (l % 2)
+        l = l / 2 + 1;
+    else
+        l = l / 2;
+    return (l);
 }
 
 int	main(int argc, char **argv)

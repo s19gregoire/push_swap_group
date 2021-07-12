@@ -34,7 +34,6 @@ void	free_stack(t_stack **a);
 void	ft_push(t_stack **s, int i, char c);
 void	ft_swap(t_stack *s, char c);
 void	ft_pop(t_stack **s, int i);
-void	print_stack(t_stack *a);
 void	ft_emptystack(t_stack **a, t_stack **b);
 int		is_sorted(t_stack *s);
 void	ft_shiftdown(t_stack **s, char c);
@@ -52,6 +51,7 @@ int		desc(t_stack *a);
 int		last(t_stack *a);
 int		get_min(t_stack *s);
 int		get_max(t_stack *s);
+int		get_len(int l);
 void	ft_quicksort(t_stack *tmp, t_stack *head);
 t_stack	*copy_stack(t_stack *s);
 
