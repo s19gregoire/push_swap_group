@@ -26,8 +26,9 @@ typedef struct s_stack
 }				t_stack;
 
 int		ft_atoi(const char *str, t_stack *a);
+int     get_stacksize(t_stack *a);
 void	pushswap(t_stack **a, t_stack **b, int l);
-void	fill_stack(int c, char **ag, t_stack **a);
+int 	fill_stack(int c, int ac, char **ag, t_stack **a);
 void	new_stack(t_stack **a, int value);
 void	free_stack(t_stack **a);
 void	ft_push(t_stack **s, int i, char c);
@@ -40,5 +41,10 @@ void	ft_shiftdown(t_stack **s, char c);
 void	ft_shiftup(t_stack **s, char c);
 void	ft_rr(t_stack **a, t_stack **b, char c);
 void	ft_rrr(t_stack **a, t_stack **b, char c);
+void    normalise_stack(t_stack **a);
+int     get_stacksize(t_stack *a);
+void ft_quicksort(t_stack *tmp, t_stack *head);
+t_stack *copy_stack(t_stack *s);
+
 
 #	endif

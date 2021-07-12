@@ -16,7 +16,11 @@ void	free_stack(t_stack **a)
 {
 	t_stack	*tmp;
 
-	while (*a)
+    while (a && *a && (*a)->prev)
+    {
+        *a = (*a)->prev;
+    }        
+	while (a && *a)
 	{
 		tmp = (*a)->next;
 		free(*a);
@@ -48,9 +52,10 @@ void	new_stack(t_stack **a, int value)
 	return ;
 }
 
-void	fill_stack(int c, char **ag, t_stack **a)
+int	fill_stack(int c, int ac, char **ag, t_stack **a)
 {
 	int	i;
+    int j;
 	int	value;
 
 	i = 0;
@@ -59,5 +64,78 @@ void	fill_stack(int c, char **ag, t_stack **a)
 		value = ft_atoi(ag[i], *a);
 		new_stack(a, value);
 		(*a)->pos = 0;
+        j = i + 1;
+        while(j < ac)
+		{
+			if (value == ft_atoi(ag[j], *a))
+            {
+                printf("Error\n");
+                return (0);
+            }				
+			j++;
+		}
 	}
+    return (1);
+}
+
+void normalise_stack(t_stack **a)
+{
+    int i;
+    t_stack *tmp;
+    t_stack *head;
+
+    tmp = copy_stack(*a);
+    head = tmp;
+    i = 0;
+    ft_quicksort(tmp, head);
+    tmp = head;
+    while (tmp)
+    {
+        while ((*a)->num != tmp->num)
+            *a = (*a)->next;
+        if (!(*a)->pos)
+        {
+            (*a)->num = i;
+            (*a)->pos = 1;
+        }
+        else
+        {
+            *a = (*a)->next;
+            while (*a && (*a)->num != tmp->num)
+                *a = (*a)->next;
+            (*a)->num = i;
+            (*a)->pos = 1;
+        }
+        while (*a && (*a)->prev)
+            *a = (*a)->prev;
+        i++;
+        tmp = tmp->next;
+    }
+    free_stack(&tmp);
+}
+
+int  get_stacksize(t_stack *a)
+{
+    int i;
+    
+    i = 0;
+    while (a)
+    {
+        i++;
+        a = a->next;
+    }
+    return (i);
+}
+
+t_stack *copy_stack(t_stack *s)
+{
+    t_stack *c;
+
+    c = NULL;
+    while (s)
+    {
+        new_stack(&c, s->num);
+        s = s->next;
+    }
+    return (c);
 }
