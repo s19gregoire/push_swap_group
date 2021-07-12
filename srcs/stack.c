@@ -80,18 +80,22 @@ int	fill_stack(int c, int ac, char **ag, t_stack **a)
 
 static void	normal_value(t_stack **a, t_stack *tmp, int i)
 {
-	if (!(*a)->pos)
+	if (*a && !(*a)->pos)
 	{
 		(*a)->num = i;
 		(*a)->pos = 1;
 	}
 	else
 	{
-		*a = (*a)->next;
+		if (*a)
+			*a = (*a)->next;
 		while (*a && (*a)->num != tmp->num)
 			*a = (*a)->next;
-		(*a)->num = i;
-		(*a)->pos = 1;
+		if (*a)
+		{
+			(*a)->num = i;
+			(*a)->pos = 1;
+		}
 	}
 }
 
@@ -108,7 +112,7 @@ void	normalise_stack(t_stack **a)
 	tmp = head;
 	while (tmp)
 	{
-		while ((*a)->num != tmp->num)
+		while (*a && (*a)->num != tmp->num)
 			*a = (*a)->next;
 		normal_value(a, tmp, i);
 		while (*a && (*a)->prev)
