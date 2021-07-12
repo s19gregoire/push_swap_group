@@ -41,7 +41,7 @@ int	ft_atoi(const char *str, t_stack *a)
 		sign = check_sign(str[i++]);
 	if (!ft_isdigit(str[i]))
 	{
-		printf("Error\nArg is not a valid number\n");
+		printf("Error\n");
 		free_stack(&a);
 		exit (0);
 	}
@@ -49,7 +49,7 @@ int	ft_atoi(const char *str, t_stack *a)
 	{
 		if (n >= INT_MAX)
 		{
-			printf("Error\nNumber is not a valid int\n");
+			printf("Error\n");
 			free_stack(&a);
 			exit (0);
 		}
