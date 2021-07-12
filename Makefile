@@ -23,6 +23,9 @@ SRC = \
 	srcs/pushswap.c \
 	srcs/pushswap_utils.c \
 	srcs/stack.c \
+	srcs/stack_utils.c \
+	srcs/algorithm_utils.c \
+	srcs/algorithm_utils2.c \
 	srcs/ft_atoi.c
 
 OBJS = 	$(SRC:.c=.o)

@@ -43,6 +43,15 @@ void	ft_rr(t_stack **a, t_stack **b, char c);
 void	ft_rrr(t_stack **a, t_stack **b, char c);
 void	normalise_stack(t_stack **a);
 int		get_stacksize(t_stack *a);
+int		to_up(t_stack **a, int mid, int l);
+int		to_down(t_stack **a, int mid, int l);
+int		to_swap(t_stack **a, int mid, int l);
+int		not_sorted(t_stack *a, int mid, int l);
+int		sorted(t_stack *a);
+int		desc(t_stack *a);
+int		last(t_stack *a);
+int		get_min(t_stack *s);
+int		get_max(t_stack *s);
 void	ft_quicksort(t_stack *tmp, t_stack *head);
 t_stack	*copy_stack(t_stack *s);
 

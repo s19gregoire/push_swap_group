@@ -56,14 +56,12 @@ void	ft_quicksort(t_stack *tmp, t_stack *head)
 static	void	bucket_sort(t_stack **a, t_stack **b)
 {
 	int	bits;
-	int	max;
 	int	stack;
 	int	i;
 
 	bits = 0;
 	i = 0;
-	max = get_max(*a);
-	while (max >> bits)
+	while (get_max(*a) >> bits)
 		bits++;
 	normalise_stack(a);
 	while (a && *a && !sorted(*a) && i < bits)
@@ -103,10 +101,9 @@ static	int	find_middle(t_stack *a, int l)
 			tmp = tmp->next;
 	}
 	tmp = head;
+	l = l / 2;
 	if (l % 2)
-		l = l / 2 + 1;
-	else
-		l = l / 2;
+		l += 1;
 	while (--l)
 		tmp = tmp->next;
 	mid = tmp->num;
