@@ -12,113 +12,7 @@
 
 #include "../inc/pushswap.h"
 
-static int	get_min(t_stack *s)
-{
-	int	min;
-
-	min = s->num;
-	while (s)
-	{
-		if (s->num < min)
-			min = s->num;
-		s = s->next;
-	}
-	return (min);
-}
-
-static int	get_max(t_stack *s)
-{
-	int	min;
-
-	min = s->num;
-	while (s)
-	{
-		if (s->num > min)
-			min = s->num;
-		s = s->next;
-	}
-	return (min);
-}
-
-static int	sorted(t_stack *s)
-{
-	while (s && s->next)
-	{
-		if (s->num > s->next->num)
-			return (0);
-		s = s->next;
-	}
-	return (1);
-}
-
-static int	not_sorted(t_stack *s, int mid, int l)
-{
-	while (s && s->next)
-	{
-		if (s->num > s->next->num
-			|| (s->num < mid && l != 3))
-			return (1);
-		s = s->next;
-	}
-	return (0);
-}
-
-static int	last(t_stack *s)
-{
-	if (!s)
-		return (-1);
-	while (s && s->next)
-		s = s->next;
-	return (s->num);
-}
-
-static int	desc(t_stack *s)
-{
-	while (s->prev)
-		s = s->prev;
-	while (s && s->next)
-	{
-		if (s->num < s->next->num)
-			return (0);
-		s = s->next;
-	}
-	return (1);
-}
-
-static int	to_swap(t_stack **a, int mid, int l)
-{
-	int	max;
-	int	min;
-
-	min = get_min(*a);
-	max = get_max(*a);
-	if (l == 3)
-		return (!(((*a)->num == max && (*a)->next->num == min)
-				|| ((*a)->num == mid && (*a)->next->num == max)));
-	return ((*a)->num >= mid && (*a)->num > (*a)->next->num);
-}
-
-static int	to_down(t_stack **a, int mid, int l)
-{
-	int	max;
-
-	max = get_max(*a);
-	if (l == 3)
-		return ((*a)->next->next->num != max);
-	return (*a && (*a)->next && (*a)->num >= mid && ((*a)->num > last(*a)));
-}
-
-static int	to_up(t_stack **a, int mid, int l)
-{
-	int	min;
-
-	min = get_min(*a);
-	if (l == 3)
-		return ((*a)->next->next->num != min);
-	return ((*a)->next && (*a)->num >= mid && *a && (*a)->num < last(*a));
-}
-
-static void	small_sort(t_stack **a, t_stack **b, int mid, int l)
+static	void	small_sort(t_stack **a, t_stack **b, int mid, int l)
 {
 	while (not_sorted(*a, mid, l) && a && *a)
 	{
@@ -159,7 +53,7 @@ void	ft_quicksort(t_stack *tmp, t_stack *head)
 	}
 }
 
-static void	bucket_sort(t_stack **a, t_stack **b)
+static	void	bucket_sort(t_stack **a, t_stack **b)
 {
 	int	bits;
 	int	max;
@@ -177,7 +71,7 @@ static void	bucket_sort(t_stack **a, t_stack **b)
 		stack = get_stacksize(*a);
 		while (a && *a && stack--)
 		{
-			if ((((*a)->num >> i) & 1))
+			if ((((*a)->num >> i) & 1 ))
 				ft_shiftup(a, 'a');
 			else
 			{
@@ -190,7 +84,7 @@ static void	bucket_sort(t_stack **a, t_stack **b)
 	}
 }
 
-static int	find_middle(t_stack *a, int l)
+static	int	find_middle(t_stack *a, int l)
 {
 	int		mid;
 	t_stack	*tmp;

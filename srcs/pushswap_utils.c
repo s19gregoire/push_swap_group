@@ -12,17 +12,6 @@
 
 #include "../inc/pushswap.h"
 
-int	is_sorted(t_stack *s)
-{
-	while (s && s->next)
-	{
-		if (s->num > s->next->num)
-			return (0);
-		s = s->next;
-	}
-	return (1);
-}
-
 void	ft_pop(t_stack **s, int i)
 {
 	t_stack	*to_del;
@@ -82,15 +71,6 @@ void	ft_swap(t_stack *s, char c)
 		printf("s%c\n", c);
 }
 
-void	ft_emptystack(t_stack **b, t_stack **a)
-{
-	while (*b)
-	{
-		ft_push(a, (*b)->num, 'a');
-		ft_pop(b, (*b)->num);
-	}
-}
-
 void	ft_shiftup(t_stack **s, char c)
 {
 	t_stack	*first;
@@ -137,18 +117,4 @@ void	ft_shiftdown(t_stack **s, char c)
 	last->prev = 0;
 	if (c)
 		printf("rr%c\n", c);
-}
-
-void	ft_rr(t_stack **a, t_stack **b, char c)
-{
-	ft_shiftup(a, c);
-	ft_shiftup(b, c);
-	printf("rr\n");
-}
-
-void	ft_rrr(t_stack **a, t_stack **b, char c)
-{
-	ft_shiftdown(a, c);
-	ft_shiftdown(b, c);
-	printf("rrr\n");
 }
