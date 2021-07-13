@@ -12,6 +12,22 @@
 
 #include "../inc/pushswap.h"
 
+void	free_stack(t_stack **a)
+{
+	t_stack	*tmp;
+
+	while (a && *a && (*a)->prev)
+	{
+		*a = (*a)->prev;
+	}
+	while (a && *a)
+	{
+		tmp = (*a)->next;
+		free(*a);
+		*a = tmp;
+	}
+}
+
 void	ft_emptystack(t_stack **b, t_stack **a)
 {
 	while (*b)
@@ -45,25 +61,4 @@ t_stack	*copy_stack(t_stack *s)
 		s = s->next;
 	}
 	return (c);
-}
-
-int	not_sorted(t_stack *s, int mid, int l)
-{
-	while (s && s->next)
-	{
-		if (s->num > s->next->num
-			|| (s->num < mid && l != 3))
-			return (1);
-		s = s->next;
-	}
-	return (0);
-}
-
-int	last(t_stack *s)
-{
-	if (!s)
-		return (-1);
-	while (s && s->next)
-		s = s->next;
-	return (s->num);
 }

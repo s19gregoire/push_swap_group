@@ -12,7 +12,35 @@
 
 #include "../inc/pushswap.h"
 
-int	is_sorted(t_stack *s)
+int	get_min(t_stack *s)
+{
+	int	min;
+
+	min = s->num;
+	while (s)
+	{
+		if (s->num < min)
+			min = s->num;
+		s = s->next;
+	}
+	return (min);
+}
+
+int	get_max(t_stack *s)
+{
+	int	min;
+
+	min = s->num;
+	while (s)
+	{
+		if (s->num > min)
+			min = s->num;
+		s = s->next;
+	}
+	return (min);
+}
+
+int	sorted(t_stack *s)
 {
 	while (s && s->next)
 	{
@@ -23,48 +51,23 @@ int	is_sorted(t_stack *s)
 	return (1);
 }
 
-int	desc(t_stack *s)
+int	not_sorted(t_stack *s, int mid, int l)
 {
-	while (s->prev)
-		s = s->prev;
 	while (s && s->next)
 	{
-		if (s->num < s->next->num)
-			return (0);
+		if (s->num > s->next->num
+			|| (s->num < mid && l != 3))
+			return (1);
 		s = s->next;
 	}
-	return (1);
+	return (0);
 }
 
-int	to_swap(t_stack **a, int mid, int l)
+int	last(t_stack *s)
 {
-	int	max;
-	int	min;
-
-	min = get_min(*a);
-	max = get_max(*a);
-	if (l == 3)
-		return (!(((*a)->num == max && (*a)->next->num == min)
-				|| ((*a)->num == mid && (*a)->next->num == max)));
-	return ((*a)->num >= mid && (*a)->num > (*a)->next->num);
-}
-
-int	to_down(t_stack **a, int mid, int l)
-{
-	int	max;
-
-	max = get_max(*a);
-	if (l == 3)
-		return ((*a)->next->next->num != max);
-	return (*a && (*a)->next && (*a)->num >= mid && ((*a)->num > last(*a)));
-}
-
-int	to_up(t_stack **a, int mid, int l)
-{
-	int	min;
-
-	min = get_min(*a);
-	if (l == 3)
-		return ((*a)->next->next->num != min);
-	return ((*a)->next && (*a)->num >= mid && *a && (*a)->num < last(*a));
+	if (!s)
+		return (-1);
+	while (s && s->next)
+		s = s->next;
+	return (s->num);
 }

@@ -12,22 +12,6 @@
 
 #include "../inc/pushswap.h"
 
-void	free_stack(t_stack **a)
-{
-	t_stack	*tmp;
-
-	while (a && *a && (*a)->prev)
-	{
-		*a = (*a)->prev;
-	}
-	while (a && *a)
-	{
-		tmp = (*a)->next;
-		free(*a);
-		*a = tmp;
-	}
-}
-
 void	new_stack(t_stack **a, int value)
 {
 	t_stack	*curr;
@@ -38,6 +22,7 @@ void	new_stack(t_stack **a, int value)
 		return (free_stack(a));
 	curr->num = value;
 	curr->next = 0;
+	curr->pos = 0;
 	if (*a == NULL)
 	{
 		curr->prev = NULL;
@@ -63,35 +48,45 @@ int	fill_stack(int c, int ac, char **ag, t_stack **a)
 	{
 		value = ft_atoi(ag[i], *a);
 		new_stack(a, value);
-		(*a)->pos = 0;
 		j = i + 1;
 		while (j < ac)
 		{
 			if (value == ft_atoi(ag[j], *a))
-			{
-				printf("Error\n");
 				return (0);
-			}				
 			j++;
 		}
 	}
 	return (1);
 }
 
+static void	ft_quicksort(t_stack *tmp, t_stack *head)
+{
+	while (tmp)
+	{
+		if (tmp->next && tmp->num > tmp->next->num)
+		{
+			ft_swap(tmp, 0);
+			tmp = head;
+		}
+		else
+			tmp = tmp->next;
+	}
+}
+
 static void	normal_value(t_stack **a, t_stack *tmp, int i)
 {
-	if (*a && !(*a)->pos)
+	if (a && *a && !(*a)->pos)
 	{
 		(*a)->num = i;
 		(*a)->pos = 1;
 	}
 	else
 	{
-		if (*a)
+		if (a && *a)
 			*a = (*a)->next;
-		while (*a && (*a)->num != tmp->num)
+		while (a && *a && (*a)->num != tmp->num)
 			*a = (*a)->next;
-		if (*a)
+		if (a && *a)
 		{
 			(*a)->num = i;
 			(*a)->pos = 1;
@@ -106,16 +101,18 @@ void	normalise_stack(t_stack **a)
 	t_stack	*head;
 
 	tmp = copy_stack(*a);
+	if (!tmp)
+		ft_exit(*a);
 	head = tmp;
 	i = 0;
 	ft_quicksort(tmp, head);
 	tmp = head;
 	while (tmp)
 	{
-		while (*a && (*a)->num != tmp->num)
+		while (a && *a && (*a)->num != tmp->num)
 			*a = (*a)->next;
 		normal_value(a, tmp, i);
-		while (*a && (*a)->prev)
+		while (a && *a && (*a)->prev)
 			*a = (*a)->prev;
 		i++;
 		tmp = tmp->next;

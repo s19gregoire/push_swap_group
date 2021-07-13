@@ -16,7 +16,6 @@ INC = -I./inc
 
 CC = gcc -g3
 CFLAGS = -Wall -Wextra -Werror
-#CFLAGS += -fsanitize=address
 
 SRC = \
 	srcs/main.c \
@@ -24,8 +23,9 @@ SRC = \
 	srcs/pushswap_utils.c \
 	srcs/stack.c \
 	srcs/stack_utils.c \
-	srcs/algorithm_utils.c \
-	srcs/algorithm_utils2.c \
+	srcs/small_sort.c \
+	srcs/small_sortutils.c \
+	srcs/sort_utils.c \
 	srcs/ft_atoi.c
 
 OBJS = 	$(SRC:.c=.o)
