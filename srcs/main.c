@@ -12,15 +12,6 @@
 
 #include "../inc/pushswap.h"
 
-int	get_len(int l)
-{
-	if (l % 2)
-		l = l / 2 + 1;
-	else
-		l = l / 2;
-	return (l);
-}
-
 int	main(int argc, char **argv)
 {
 	t_stack	*a;
@@ -33,6 +24,7 @@ int	main(int argc, char **argv)
 		a = NULL;
 		if (!fill_stack(l, argc, argv, &a))
 		{
+			printf("Error\n");
 			free_stack(&a);
 			return (0);
 		}

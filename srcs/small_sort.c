@@ -12,18 +12,7 @@
 
 #include "../inc/pushswap.h"
 
-int	is_sorted(t_stack *s)
-{
-	while (s && s->next)
-	{
-		if (s->num > s->next->num)
-			return (0);
-		s = s->next;
-	}
-	return (1);
-}
-
-int	desc(t_stack *s)
+static int	desc(t_stack *s)
 {
 	while (s->prev)
 		s = s->prev;
@@ -36,7 +25,7 @@ int	desc(t_stack *s)
 	return (1);
 }
 
-int	to_swap(t_stack **a, int mid, int l)
+static int	to_swap(t_stack **a, int mid, int l)
 {
 	int	max;
 	int	min;
@@ -49,22 +38,58 @@ int	to_swap(t_stack **a, int mid, int l)
 	return ((*a)->num >= mid && (*a)->num > (*a)->next->num);
 }
 
-int	to_down(t_stack **a, int mid, int l)
+static int	distance(t_stack *a, int min)
 {
-	int	max;
+	int	i;
 
-	max = get_max(*a);
-	if (l == 3)
-		return ((*a)->next->next->num != max);
-	return (*a && (*a)->next && (*a)->num >= mid && ((*a)->num > last(*a)));
+	i = 0;
+	while (a && a->num != min)
+	{
+		i++;
+		a = a->next;
+	}
+	return (i);
 }
 
-int	to_up(t_stack **a, int mid, int l)
+static void	sort_five(t_stack **a, int mid, int l)
 {
 	int	min;
 
 	min = get_min(*a);
-	if (l == 3)
-		return ((*a)->next->next->num != min);
-	return ((*a)->next && (*a)->num >= mid && *a && (*a)->num < last(*a));
+	if (distance(*a, min) < (l / 2))
+	{
+		while (not_sorted(*a, mid, l) && (*a)->num != min)
+			ft_shiftup(a, 'a');
+	}
+	else
+	{
+		while (not_sorted(*a, mid, l) && (*a)->num != min)
+			ft_shiftdown(a, 'a');
+	}
+}
+
+
+void	small_sort(t_stack **a, t_stack **b, int mid, int l)
+{
+	while (not_sorted(*a, mid, l) && a && *a)
+	{
+		if (*a && (*a)->next && to_swap(a, mid, l))
+			ft_swap(*a, 'a');
+		while (l != 3 && *a && not_sorted(*a, mid, l) && (*a)->num < mid)
+		{
+			ft_push(b, (*a)->num, 'b');
+			ft_pop(a, (*a)->num);
+			if (*b && (*b)->next && (*b)->num < (*b)->next->num)
+				ft_swap(*b, 'b');
+			else if (*b && !desc(*b) && (*b)->num > last(*b))
+				ft_shiftdown(b, 'b');
+			else if (*b && !desc(*b) && (*b)->num < last(*b))
+				ft_shiftup(b, 'b');
+		}
+		if (get_stacksize(*a) != 3)
+			sort_five(a, mid, l);
+		else
+			sort_three(a, mid, l);
+	}
+	ft_emptystack(b, a);
 }

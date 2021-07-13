@@ -12,55 +12,32 @@
 
 #include "../inc/pushswap.h"
 
-void	ft_rr(t_stack **a, t_stack **b, char c)
+static int	to_down(t_stack **a, int mid, int l)
 {
-	ft_shiftup(a, c);
-	ft_shiftup(b, c);
-	printf("rr\n");
+	int	max;
+
+	max = get_max(*a);
+	if (l == 3)
+		return ((*a)->next->next->num != max);
+	return (*a && (*a)->next && (*a)->num >= mid && ((*a)->num > last(*a)));
 }
 
-void	ft_rrr(t_stack **a, t_stack **b, char c)
-{
-	ft_shiftdown(a, c);
-	ft_shiftdown(b, c);
-	printf("rrr\n");
-}
-
-int	get_min(t_stack *s)
+static int	to_up(t_stack **a, int mid, int l)
 {
 	int	min;
 
-	min = s->num;
-	while (s)
-	{
-		if (s->num < min)
-			min = s->num;
-		s = s->next;
-	}
-	return (min);
+	min = get_min(*a);
+	if (l == 3)
+		return ((*a)->next->next->num != min);
+	return ((*a)->next && (*a)->num >= mid && *a && (*a)->num < last(*a));
 }
 
-int	get_max(t_stack *s)
+void	sort_three(t_stack **a, int mid, int l)
 {
-	int	min;
-
-	min = s->num;
-	while (s)
-	{
-		if (s->num > min)
-			min = s->num;
-		s = s->next;
-	}
-	return (min);
-}
-
-int	sorted(t_stack *s)
-{
-	while (s && s->next)
-	{
-		if (s->num > s->next->num)
-			return (0);
-		s = s->next;
-	}
-	return (1);
+	while (not_sorted(*a, mid, l)
+		&& to_down(a, mid, l) && (*a)->num >= mid)
+		ft_shiftdown(a, 'a');
+	while (not_sorted(*a, mid, l)
+		&& to_up(a, mid, l) && (*a)->num >= mid)
+		ft_shiftup(a, 'a');
 }

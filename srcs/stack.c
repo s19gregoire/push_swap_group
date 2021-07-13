@@ -12,22 +12,6 @@
 
 #include "../inc/pushswap.h"
 
-void	free_stack(t_stack **a)
-{
-	t_stack	*tmp;
-
-	while (a && *a && (*a)->prev)
-	{
-		*a = (*a)->prev;
-	}
-	while (a && *a)
-	{
-		tmp = (*a)->next;
-		free(*a);
-		*a = tmp;
-	}
-}
-
 void	new_stack(t_stack **a, int value)
 {
 	t_stack	*curr;
@@ -68,14 +52,25 @@ int	fill_stack(int c, int ac, char **ag, t_stack **a)
 		while (j < ac)
 		{
 			if (value == ft_atoi(ag[j], *a))
-			{
-				printf("Error\n");
 				return (0);
-			}				
 			j++;
 		}
 	}
 	return (1);
+}
+
+static void	ft_quicksort(t_stack *tmp, t_stack *head)
+{
+	while (tmp)
+	{
+		if (tmp->next && tmp->num > tmp->next->num)
+		{
+			ft_swap(tmp, 0);
+			tmp = head;
+		}
+		else
+			tmp = tmp->next;
+	}
 }
 
 static void	normal_value(t_stack **a, t_stack *tmp, int i)
