@@ -12,6 +12,16 @@
 
 #include "../inc/pushswap.h"
 
+void	write_cmd(int c)
+{
+	if (c)
+	{
+		write(1, "p", 1);
+		write(1, &c, 1);
+		write(1, "\n", 1);
+	}
+}
+
 static int	to_down(t_stack **a, int mid, int l)
 {
 	int	max;

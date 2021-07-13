@@ -28,7 +28,7 @@ static int	check_sign(char c)
 
 static int	stack_error(t_stack *a)
 {
-	printf("Error\n");
+	write(1, "Error\n", 6);
 	free_stack(&a);
 	exit (0);
 }
@@ -48,7 +48,7 @@ int	ft_atoi(const char *str, t_stack *a)
 		sign = check_sign(str[i++]);
 	if (!ft_isdigit(str[i]))
 	{
-		printf("Error\n");
+		write(1, "Error\n", 6);
 		free_stack(&a);
 		exit (0);
 	}

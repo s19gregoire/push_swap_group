@@ -24,7 +24,7 @@ int	main(int argc, char **argv)
 		a = NULL;
 		if (!fill_stack(l, argc, argv, &a))
 		{
-			printf("Error\n");
+			write(1, "Error\n", 6);
 			free_stack(&a);
 			return (0);
 		}

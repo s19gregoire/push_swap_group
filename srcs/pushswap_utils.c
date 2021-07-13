@@ -43,8 +43,7 @@ void	ft_push(t_stack **s, int i, char c)
 		free_stack(s);
 		return ;
 	}
-	if (c)
-		printf("p%c\n", c);
+	write_cmd(c);
 	if (*s == NULL)
 	{
 		*s = top;
@@ -68,7 +67,11 @@ void	ft_swap(t_stack *s, char c)
 	s->next->num = s->num;
 	s->num = tmp;
 	if (c)
-		printf("s%c\n", c);
+	{
+		write(1, "s", 1);
+		write(1, &c, 1);
+		write(1, "\n", 1);
+	}
 }
 
 void	ft_shiftup(t_stack **s, char c)
@@ -92,7 +95,11 @@ void	ft_shiftup(t_stack **s, char c)
 	last->next = 0;
 	last->prev = first;
 	if (c)
-		printf("r%c\n", c);
+	{
+		write(1, "r", 1);
+		write(1, &c, 1);
+		write(1, "\n", 1);
+	}
 }
 
 void	ft_shiftdown(t_stack **s, char c)
@@ -116,5 +123,9 @@ void	ft_shiftdown(t_stack **s, char c)
 	last->next = first;
 	last->prev = 0;
 	if (c)
-		printf("rr%c\n", c);
+	{
+		write(1, "rr", 2);
+		write(1, &c, 1);
+		write(1, "\n", 1);
+	}
 }

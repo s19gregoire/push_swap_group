@@ -68,7 +68,6 @@ static void	sort_five(t_stack **a, int mid, int l)
 	}
 }
 
-
 void	small_sort(t_stack **a, t_stack **b, int mid, int l)
 {
 	while (not_sorted(*a, mid, l) && a && *a)

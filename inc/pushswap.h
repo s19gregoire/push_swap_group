@@ -15,6 +15,7 @@
 
 # include <stdio.h>
 # include <stdlib.h>
+# include <unistd.h>
 # include <limits.h>
 
 typedef struct s_stack
@@ -48,6 +49,7 @@ void	ft_rrr(t_stack **a, t_stack **b, char c);
 void	pushswap(t_stack **a, t_stack **b, int l);
 void	small_sort(t_stack **a, t_stack **b, int mid, int l);
 void	sort_three(t_stack **a, int mid, int l);
+void	write_cmd(int c);
 t_stack	*copy_stack(t_stack *s);
 
 #	endif
