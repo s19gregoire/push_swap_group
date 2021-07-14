@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/10 08:05:31 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/07/14 10:42:12 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/07/14 15:51:53 by areheis          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,9 +59,9 @@ int	ft_atoi(const char *str, t_stack *a)
 	check_digit(str[i], a);
 	while (str[i] && str[i] >= '0' && str[i] <= '9')
 	{
-		if (n >= INT_MAX)
-			stack_error(a);
 		n = n * 10 + (str[i++] - '0');
+		if (n > INT_MAX && !((int)n == INT_MIN && sign < 0))
+			stack_error(a);
 	}
 	if (str[i])
 		check_digit(str[i], a);
