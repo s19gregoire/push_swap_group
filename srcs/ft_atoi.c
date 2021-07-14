@@ -6,7 +6,7 @@
 /*   By: mlazzare <mlazzare@student.s19.be>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/11/10 08:05:31 by mlazzare          #+#    #+#             */
-/*   Updated: 2021/05/13 19:55:57 by mlazzare         ###   ########.fr       */
+/*   Updated: 2021/07/14 10:42:12 by mlazzare         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,16 @@ static int	stack_error(t_stack *a)
 	exit (0);
 }
 
+static void	check_digit(char c, t_stack *a)
+{
+	if (!ft_isdigit(c))
+	{
+		write(1, "Error\n", 6);
+		free_stack(&a);
+		exit (0);
+	}
+}
+
 int	ft_atoi(const char *str, t_stack *a)
 {
 	int						i;
@@ -46,17 +56,14 @@ int	ft_atoi(const char *str, t_stack *a)
 		i++;
 	if (str[i] == '-' || str[i] == '+')
 		sign = check_sign(str[i++]);
-	if (!ft_isdigit(str[i]))
-	{
-		write(1, "Error\n", 6);
-		free_stack(&a);
-		exit (0);
-	}
-	while (str[i] >= '0' && str[i] <= '9')
+	check_digit(str[i], a);
+	while (str[i] && str[i] >= '0' && str[i] <= '9')
 	{
 		if (n >= INT_MAX)
 			stack_error(a);
 		n = n * 10 + (str[i++] - '0');
 	}
+	if (str[i])
+		check_digit(str[i], a);
 	return (sign * (int)n);
 }
